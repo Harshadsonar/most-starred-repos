@@ -1,32 +1,100 @@
-# Most Starred Repositories
+Front-end Coding Challenge
+Idea of the App
 
-Welcome to the **Most Starred Repositories** project! This repository is dedicated to collecting and showcasing the GitHub repositories with the highest number of stars. If you're looking for trending and popular open-source projects, you're in the right place!
+The task is to implement a small webapp that will list the most starred Github repos that were created in the last 30 days. There will also be a simple drill down feature that displays a time series graph of various metrics for the given repository. You'll be fetching the sorted JSON data directly from the Github API (Github API explained down below).
+Features
 
-## How It Works
+    As a User I should be able to list the most starred Github repos that were created in the last 1 week, 2 weeks, 1 month.
+    As a User I should be able to identify period of time to search for most starred repos.
+    As a User I should see the results as a list. One repository per row.
+    As a User I should be able to see for each repo/row the following details :
+        Repository name
+        Repository description
+        Number of stars for the repo.
+        Number of issues for the repo.
+        Username and avatar of the owner.
+    As a User I should be able to keep scrolling and new results should appear (pagination).
+    As a User I should be able to drill down into each repo and see the commit activity a weekly basis for up to a year of the most recent history of the repo
+        Dropdown option allows for selection for showing additions or deletions vor commits (generally "changes"), which applies to both plots
+        One graph for total number of changes across all contributors per week
+            On hover we should see the exact number of changes, along with the human readable timestamp
+        One graph with a multiline plot, one line for each contributor's total changes per week
+            On hover we see the exact number of changes, along with the human readable timestamp, contributor
+            A different line on the graph should be shown per contributor
+            A legend that allows toggle per contributor
+        Both plots share the same x axis but are separate vertically stacked plots.
+        Need human readable x axis labels for weeks by start dates, y axis for counts
 
-This project periodically fetches data from GitHub's API to identify and compile a list of repositories that have garnered the most stars. The data is updated regularly to reflect the latest trends in the GitHub community. The repository also provides a simple web interface where you can browse and explore these top-starred repositories.
+Things to keep in mind 🚨
 
-## Features
+Your code will be evaluated on:
 
-- 🌟 Curated List: Discover the most starred repositories across a variety of programming languages and domains.
-- 🔄 Regular Updates: The repository data is automatically updated to ensure you're always up-to-date with the latest trends.
-- 📊 Statistics: Gain insights into the distribution of stars among different repositories and programming languages.
-- 🚀 Explore Issues: Not only can you explore repositories, but you can also delve into the issues associated with these repositories, making it easier to find projects that align with your interests.
+    whether the techologies required are used
+    code structure
+    programming best practices
+    legibility
+    styling and appearance
+    responsiveness
+    rendering performance
 
-## How to Use
+How to get the data from Github
+Search Repos
 
-1. **Explore Repositories**: Visit the [web interface](https://github-repositories101.netlify.app/) to browse through the most starred repositories. You can filter by the top five users.
+To get the most starred Github repos created in the last 30 days (relative to 2017-11-22), you'll need to call the following endpoint :
 
-2. **Contribute**: If you want to explore the repository data locally or contribute to the project, feel free to open a pull request with the necessary information.
+https://api.github.com/search/repositories?q=created:>2017-10-22&sort=stars&order=desc
 
-## Contributing
+The JSON data from Github will be paginated (you'll receive around 100 repos per JSON page).
 
-Contributions are welcome and encouraged! Whether you want to suggest an improvement, report a bug, or add new features, please read our [Contribution Guidelines](CONTRIBUTING.md) to get started.
+To get the 2nd page, you add &page=2 to the end of your API request :
 
-## License
+https://api.github.com/search/repositories?q=created:>2017-10-22&sort=stars&order=desc&page=2
 
-This project is licensed under the [MIT License](LICENSE).
+To get the 3rd page, you add &page=3 ... etc
 
----
+You can read more about the Github API over here.
+Commit/Additions/Deletions Activity
 
-Thank you for taking an interest in the **Most Starred Repositories** project. Your support and contributions make this endeavor possible! If you have any questions, feel free to [Willochs Ojigbo](willochs316@gmail.com).
+You will need the following to get the total weekly additions/deletions activity
+
+GET /repos/{owner}/{repo}/stats/code_frequency documentation
+
+ex: https://api.github.com/repos/octocat/hello-world/stats/code_frequency
+
+You will need the following to get the total weekly commits activity
+
+GET /repos/{owner}/{repo}/stats/commit_activity documentation
+
+ex: https://api.github.com/repos/octocat/hello-world/stats/commit_activity
+
+You will need the folowing to get the weekly additions/deletions/commits activity per contributor
+
+GET /repos/{owner}/{repo}/stats/contributors documentation
+
+ex: https://api.github.com/repos/octocat/hello-world/stats/contributors
+Mockup
+
+mockup
+Technologies to use
+
+We'd like to see your implementation using the following technologies:
+
+    React (hooks)
+    Redux (redux-toolkit.js)
+    Redux Saga
+    MUI
+
+It is preferred that you use
+
+    Highcharts
+
+How to submit the challenge solution?
+
+After you finished your app, please follow the instructions below:
+
+    Create or use an existing account on https://codesandbox.io so you can save and share your work
+    Create a sandbox
+    Email including
+
+    time spent
+    link to the code sandbox with all necessary dependencies and full implementation
